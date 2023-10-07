@@ -6,13 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Main {
+public class General {
     private Connection connection;
     private static final String JDBC_URL = "jdbc:mysql://localhost/quiz";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "Nucmed2018!";
 
-    public Main() {
+    public General() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // Load the JDBC driver
             this.connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD);
@@ -21,6 +21,16 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public General(String jdbcUrl, String username, String password) {
+        try {
+            // Initialize the database connection
+            this.connection = DriverManager.getConnection(jdbcUrl, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createTables() {
         try {
             // Create the Topics table
@@ -182,7 +192,7 @@ public class Main {
     public static void main(String[] args) {
         // Example usage
 
-        Main dao = new Main();
+        General dao = new General();
         dao.insertTopic("Mathematics");
         dao.insertTopic("Science");
 
