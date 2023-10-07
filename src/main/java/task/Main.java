@@ -1,4 +1,4 @@
-package org.example;
+package task;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ public class Main {
     private Connection connection;
     private static final String JDBC_URL = "jdbc:mysql://localhost/quiz";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_PASSWORD = "Nucmed2018!";
 
     public Main() {
         try {
@@ -184,7 +184,7 @@ public class Main {
         dao.insertTopic("Mathematics");
         dao.insertTopic("Science");
 
-         dao.saveQuestion(1, 1, "What is your question?");
+        dao.saveQuestion(1, 1, "What is your question?");
 
         dao.updateQuestion(2,  "What is question?");
         dao.close();
