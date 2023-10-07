@@ -152,6 +152,21 @@ public class Main {
     }
 
 
+
+    public boolean insertTopic(String topicName) {
+        try {
+            String sql = "INSERT INTO Topics (TopicName) VALUES (?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, topicName);
+                preparedStatement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void close() {
         try {
             if (connection != null) {
@@ -164,8 +179,12 @@ public class Main {
 
     public static void main(String[] args) {
         // Example usage
+
         Main dao = new Main();
-        // dao.saveQuestion(1, 1, "What is your question?");
+        dao.insertTopic("Mathematics");
+        dao.insertTopic("Science");
+
+         dao.saveQuestion(1, 1, "What is your question?");
 
         dao.updateQuestion(2,  "What is question?");
         dao.close();
