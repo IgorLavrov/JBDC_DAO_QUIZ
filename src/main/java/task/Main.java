@@ -139,16 +139,18 @@ public class Main {
     }
 
     public ResultSet searchQuestionByTopic(String topicName) {
+        ResultSet resultSet = null;
+
         try {
             String sql = "SELECT * FROM Questions JOIN Topics ON Questions.TopicID = Topics.TopicID WHERE Topics.TopicName = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, topicName);
-                return preparedStatement.executeQuery();
-            }
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, topicName);
+            resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return resultSet;
     }
 
 
@@ -186,7 +188,28 @@ public class Main {
 
         dao.saveQuestion(1, 1, "What is your question?");
 
-        dao.updateQuestion(2,  "What is question?");
+        // Save a new question
+        dao.saveQuestion(2, 2, "Sample Question");
+
+        // Update a question
+        dao.updateQuestion(1, "Updated Question Content");
+
+        // Delete a question
+        dao.deleteQuestion(1);
+
+
+        ResultSet resultSet = dao.searchQuestionByTopic("Science");
+        try {
+            while (resultSet.next()) {
+                int questionId = resultSet.getInt("QuestionID");
+                String content = resultSet.getString("Content");
+                System.out.println("Question ID: " + questionId);
+                System.out.println("Content: " + content);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         dao.close();
     }
 }
