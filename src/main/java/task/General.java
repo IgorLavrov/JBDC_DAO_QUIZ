@@ -14,9 +14,9 @@ public class General {
 
     public General() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Load the JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD);
-            createTables(); // Create tables when the DAO is instantiated
+            createTables();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -24,7 +24,6 @@ public class General {
 
     public General(String jdbcUrl, String username, String password) {
         try {
-            // Initialize the database connection
             this.connection = DriverManager.getConnection(jdbcUrl, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -33,7 +32,7 @@ public class General {
 
     private void createTables() {
         try {
-            // Create the Topics table
+
             String createTopicsTableSQL = "CREATE TABLE IF NOT EXISTS Topics (" +
                     "TopicID INT PRIMARY KEY AUTO_INCREMENT," +
                     "TopicName VARCHAR(255) NOT NULL" +
@@ -42,7 +41,7 @@ public class General {
                 preparedStatement.executeUpdate();
             }
 
-            // Create the Questions table
+
             String createQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS Questions (" +
                     "QuestionID INT PRIMARY KEY AUTO_INCREMENT," +
                     "TopicID INT NOT NULL," +
@@ -54,7 +53,7 @@ public class General {
                 preparedStatement.executeUpdate();
             }
 
-            // Create the Responses table
+
             String createResponsesTableSQL = "CREATE TABLE IF NOT EXISTS Responses (" +
                     "ResponseID INT PRIMARY KEY AUTO_INCREMENT," +
                     "QuestionID INT NOT NULL," +
@@ -66,7 +65,7 @@ public class General {
                 preparedStatement.executeUpdate();
             }
 
-            // Create the table to handle multiple correct responses for a question
+
             String createQuestionCorrectResponsesTableSQL = "CREATE TABLE IF NOT EXISTS QuestionCorrectResponses (" +
                     "QuestionID INT NOT NULL," +
                     "ResponseID INT NOT NULL," +
@@ -85,7 +84,7 @@ public class General {
 
     public boolean saveQuestion(int topicId, int difficultyRank, String content) {
         try {
-            // Check if the provided topicId exists in the Topics table
+
             if (isTopicIdValid(topicId)) {
                 String sql = "INSERT INTO Questions (TopicID, DifficultyRank, Content) VALUES (?, ?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -111,7 +110,7 @@ public class General {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setInt(1, topicId);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                return resultSet.next(); // Returns true if a matching topicId is found
+                return resultSet.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,7 +189,7 @@ public class General {
     }
 
     public static void main(String[] args) {
-        // Example usage
+
 
         General dao = new General();
         dao.insertTopic("Mathematics");
@@ -198,13 +197,13 @@ public class General {
 
         dao.saveQuestion(1, 1, "What is your question?");
 
-        // Save a new question
+
         dao.saveQuestion(2, 2, "Sample Question");
 
-        // Update a question
+
         dao.updateQuestion(1, "Updated Question Content");
 
-        // Delete a question
+
         dao.deleteQuestion(1);
 
 
